@@ -22,4 +22,21 @@ Type specifier missing, defaults to 'int'; ISO C99 and later do not support impl
 
 https://github.com/AppsFlyerSDK/appsflyer-unity-plugin/issues/263
 
-可见AF已经在其最新的SDK版本解决了该问题
+可见AF已经在其最新的版本解决了该问题
+
+当然如果还没有升级AF，可以按Xcode的提示改法临时解决下
+
+```objective-c
+BOOL __swizzled_didReceiveRemoteNotification(id self, SEL _cmd, UIApplication* application, NSDictionary* userInfo,void (^UIBackgroundFetchResult)(void) ) {
+    NSLog(@"swizzled didReceiveRemoteNotification");
+    
+    [[AppsFlyerLib shared] handlePushNotification:userInfo];
+    
+    if(__original_didReceiveRemoteNotification_Imp){
+        return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*, int(UIBackgroundFetchResult)))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo, nil);
+    }
+    return YES;
+}
+```
+
+再Archive下，没有出现新的报错，Archive Success了。
