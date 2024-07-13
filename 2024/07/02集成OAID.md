@@ -1,10 +1,11 @@
 ## 集成OAID
+总体思路参考这篇AF的OAID集成文档即可
 
 https://support.appsflyer.com/hc/en-us/articles/360006278797-Android-OAID-implementation-in-the-SDK
 
 > The Open Anonymous Device Identifier (OAID) is a user-resettable unique identifier for Android devices. It was introduced by the Mobile Security Alliance (MSA), China Information and Communication Research Institute, and device manufacturers, as a privacy-preserving alternative to non-resettable device identifiers like IMEI.
 	
-	The OAID is usually used for ad measurement and install attribution on devices where Google Play Services aren't available (meaning where Google Advertising ID does not exist).
+> The OAID is usually used for ad measurement and install attribution on devices where Google Play Services aren't available (meaning where Google Advertising ID does not exist).
 
 
 
@@ -17,6 +18,7 @@ https://support.appsflyer.com/hc/en-us/articles/360006278797-Android-OAID-implem
 - 未注册请发送完整公司名称、真实姓名、联系方式、APP名称、加盖公章的营业执照（事业单位法人证书）复印件或扫描件
 
 通过之后会得到一个demo的zip包，解压后，里面有开发者说明文档和FAQ。
+
 注意以下几项：
 
 - oaid_sdk_2.5.0.aar
