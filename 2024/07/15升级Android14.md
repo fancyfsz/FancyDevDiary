@@ -55,3 +55,51 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-6.7.1-bin.zip
 
 另外`android.enableR8`属性已废弃，需要从`gradle.properties`文件中移除。
 
+
+
+使用Android14手机进行测试，进游戏闪退：
+
+```
+java.lang.SecurityException: (这里是应用的bundle id): One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED should be specified when a receiver isn't being registered exclusively for system broadcasts
+```
+
+报错参考文档：
+
+https://stackoverflow.com/questions/77235063/one-of-receiver-exported-or-receiver-not-exported-should-be-specified-when-a-rec
+
+其中提到的一个关键点是：
+
+> As discussed at Google I/O 2023, registering receivers with intention using the RECEIVER_EXPORTED / RECEIVER_NOT_EXPORTED flag was introduced as part of Android 13 and is now a requirement for apps running on Android 14 or higher (U+).
+
+即对于运行在Android14以及以上的手机，registerReceiver需要写明使用RECEIVER_EXPORTED或者RECEIVER_NOT_EXPORTED的flag，否则系统就会抛出一个安全异常，对于没有进行try catch操作的代码来说，表现就是闪退了。
+
+修改前：
+
+```java
+        registerReceiver(UpdateAndInstall.receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+```
+
+修改后:
+
+```java
+    private void registerActionDownloadComplete() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerActionDownloadCompleteNew();
+        } else {
+            registerActionDownloadCompleteOld();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    private void registerActionDownloadCompleteNew() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(UpdateAndInstall.receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_NOT_EXPORTED);
+        }
+    }
+
+    private void registerActionDownloadCompleteOld() {
+        registerReceiver(UpdateAndInstall.receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+```
+
