@@ -17,6 +17,13 @@ https://support.google.com/googleplay/android-developer/answer/11926878
 
 打包报错：`aapt2 unexpected error during link`
 
+```groovy
+Execution failed for task ':app:processReleaseResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
+   > AAPT2 aapt2-4.2.2-7147631-osx Daemon #0: Unexpected error during link, attempting to stop daemon.
+     This should not happen under normal circumstances, please file an issue if it does.
+```
+
 报错参考文档：
 
 [**https://github.com/facebook/facebook-android-sdk/issues/1223**](https://github.com/facebook/facebook-android-sdk/issues/1223) （这个不改也没问题）
