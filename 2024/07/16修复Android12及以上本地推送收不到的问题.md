@@ -36,3 +36,35 @@ am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, notificationTime, pendingI
 https://stackoverflow.com/questions/71031091/android-12-using-schedule-exact-alarm-permission-to-get-show-data-at-specific-t
 
 https://developer.android.com/about/versions/14/changes/schedule-exact-alarms
+
+可见如果想要调用如下几个API：
+
+- setExact()
+
+- setExactAndAllowWhileIdle()
+
+- setAlarmClock()
+
+  是需要`SCHEDULE_EXACT_ALARM`权限的，否则会抛出SecurityException异常。
+
+`SCHEDULE_EXACT_ALARM`权限正是在Android12中引入的，Android12会自动授权，但Android13以及以上会默认拒绝该权限。
+
+最佳实践是如需调用精准闹钟的API，则需要在调用前使用canScheduleExactAlarms()接口进行判断，有权限调用精准闹钟API，没有权限应该进行fallback。
+
+修改后:
+
+```xml
+<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+```
+
+```java
+AlarmManager am = (AlarmManager)androidActivity.getSystemService(Context.ALARM_SERVICE);
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    if (am.canScheduleExactAlarms()) {
+        am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, notificationTime, pendingIntent);
+		} else {
+     		am.set(AlarmManager.RTC_WAKEUP, notificationTime, pendingIntent);
+    }
+}
+```
+
