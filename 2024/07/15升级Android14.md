@@ -150,7 +150,7 @@ Caused by android.os.RemoteException
 
 跟进游戏闪退遇到的其实是同一个问题，即registerReceiver没有设置Flag。这回出问题的是 UniWebView插件，它涉及到的是游戏内跟内置网页相关的功能，没有测试到。
 
-
+![UniWebView5.6.2](./../../pic/UniWebView5.6.2.png)
 
 据官方文档，它已于5.6.2版本修复此问题，因此我们把该插件升级到这个版本及其以上即可解决。
 
