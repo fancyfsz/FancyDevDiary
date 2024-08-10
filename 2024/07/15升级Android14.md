@@ -110,3 +110,51 @@ https://stackoverflow.com/questions/77235063/one-of-receiver-exported-or-receive
 
 ```
 
+升级Android14上线之后，发现崩溃率上升2个点
+
+主要崩溃如下：
+
+```
+Caused by java.lang.SecurityException
+: One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED should be specified when a receiver isn't being registered exclusively for system broadcasts
+          Caused by java.lang.SecurityException: com.more.lastfortress.gp: One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED should be specified when a receiver isn't being registered exclusively for system broadcasts
+       at android.os.Parcel.createExceptionOrNull(Parcel.java:3087)
+       at android.os.Parcel.createException(Parcel.java:3071)
+       at android.os.Parcel.readException(Parcel.java:3054)
+       at android.os.Parcel.readException(Parcel.java:2996)
+       at android.app.IActivityManager$Stub$Proxy.registerReceiverWithFeature(IActivityManager.java:5684)
+       at android.app.ContextImpl.registerReceiverInternal(ContextImpl.java:1868)
+       at android.app.ContextImpl.registerReceiver(ContextImpl.java:1804)
+       at android.app.ContextImpl.registerReceiver(ContextImpl.java:1792)
+       at android.content.ContextWrapper.registerReceiver(ContextWrapper.java:765)
+       at com.onevcat.uniwebview.UniWebViewFileDownloader.register(UniWebViewFileDownloader.kt:70)
+       at com.onevcat.uniwebview.UniWebView.<init>(UniWebView.kt:68)
+       at com.onevcat.uniwebview.UniWebViewContainer.<init>(UniWebViewContainer.kt:76)
+       at com.onevcat.uniwebview.UniWebViewContainer.<init>(UniWebViewContainer.kt:28)
+       at com.onevcat.uniwebview.UniWebViewInterface$Companion$init$1.invoke(UniWebViewInterface.kt:30)
+       at com.onevcat.uniwebview.UniWebViewInterface$Companion$init$1.invoke(UniWebViewInterface.kt:28)
+       at com.onevcat.uniwebview.UniWebViewInterface$Companion.runSafelyOnUiThread$lambda-0(UniWebViewInterface.kt:593)
+       at com.onevcat.uniwebview.UniWebViewInterface$Companion.$r8$lambda$6__t4l1bsNDfkejCf664qhlG6vE()
+       at com.onevcat.uniwebview.UniWebViewInterface$Companion$$ExternalSyntheticLambda1.run(:2)
+       at android.os.Handler.handleCallback(Handler.java:958)
+       at android.os.Handler.dispatchMessage(Handler.java:99)
+       at android.os.Looper.loopOnce(Looper.java:255)
+       at android.os.Looper.loop(Looper.java:364)
+       at android.app.ActivityThread.main(ActivityThread.java:8938)
+       at java.lang.reflect.Method.invoke(Method.java)
+       at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:572)
+       at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1053)
+        
+Caused by android.os.RemoteException
+```
+
+跟进游戏闪退遇到的其实是同一个问题，即registerReceiver没有设置Flag。这回出问题的是 UniWebView插件，它涉及到的是游戏内跟内置网页相关的功能，没有测试到。
+
+![UniWebView5.6.2](/Users/fancy/Documents/UniWebView5.6.2.png)
+
+据官方文档，它已于5.6.2版本修复此问题，因此我们把该插件升级到这个版本及其以上即可解决。
+
+反思：
+
+可以利用例如  https://github.com/skylot/jadx  等工具，先静态检测一遍包体是否有registerReceiver没有适配Android14的情形（特别是没有加 TryCatch 的），有针对性的测试相关的功能，如有需要升级相关的SDK。
+
