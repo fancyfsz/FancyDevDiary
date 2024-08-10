@@ -68,3 +68,18 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 }
 ```
 
+
+
+其他参考文档：
+
+通知权限相关：
+
+https://help.moengage.com/hc/en-us/articles/16768530490132-Android-Push-Permission-and-Reachability#h_01HBT39SSWEJKYS15SSNJ0NARH
+
+WorkManager实现：
+
+https://medium.com/@munbonecci/how-to-launch-a-local-notification-in-android-afaa47eb1d1c
+
+Alarm权限说明：
+
+https://proandroiddev.com/quick-guide-of-alarms-on-android-12-3a864ea81910
