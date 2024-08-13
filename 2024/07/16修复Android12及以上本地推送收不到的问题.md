@@ -68,7 +68,22 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 }
 ```
 
+请求权限的示例代码：
 
+```java
+public void requestExactAlarmPermission() {
+    AlarmManager am = (AlarmManager) mActivity.getSystemService(Context.ALARM_SERVICE);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          if (!am.canScheduleExactAlarms()) {
+                Intent alarmIntent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                mActivity.startActivity(alarmIntent);
+          }
+    }
+}
+```
+
+没有授权的用户会导航到如下的页面：
+![ClockAndReminder](../../pic/ClockAndReminder.png)
 
 其他参考文档：
 
