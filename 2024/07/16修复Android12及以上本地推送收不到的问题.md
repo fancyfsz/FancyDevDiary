@@ -83,6 +83,9 @@ public void requestExactAlarmPermission() {
 ```
 
 没有授权的用户会导航到如下的页面：
+
+
+
 ![ClockAndReminder](../../pic/ClockAndReminder.png)
 
 其他参考文档：
