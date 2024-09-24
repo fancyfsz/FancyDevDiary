@@ -16,12 +16,13 @@
    Exception: Unknown CPU architecture  for library Assets/ThirdPart/XLua/Plugins/iOS/libxlua.a
    ```
 
-小贴士：把Jenkins上的控制台输出已文本形式查看，滑动到最底部，再`Ctrl+A` ` Ctrl+C` ` Ctrl+V`保存一个文本文件，如Log.txt，再使用下面的脚本快速过滤报错项。
+小贴士：把Jenkins上的控制台输出已文本形式查看，滑动到最底部，再`Ctrl+A` ` Ctrl+C` ` Ctrl+V`保存一个文本文件（这里不用这么麻烦，直接右键点击`存储为`就行了），如Log.txt，再使用下面的脚本快速过滤报错项。
 
    ```shell
    # 保存为DetectBuildPackageError.sh 后面还可以再扩展
    file="$1"
    grep -E "^[^a-zA-Z]*Exception:" "$file"
+   grep "error CS" "$file"
    ```
 
 ```   shell
