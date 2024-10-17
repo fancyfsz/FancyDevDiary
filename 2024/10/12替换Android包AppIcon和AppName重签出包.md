@@ -30,7 +30,7 @@
    apksigner sign \
        --ks your-keystore-file \
        --ks-pass pass:your-keystore-password \
-       --key-alias your-keystore-alias \
+       --ks-key-alias your-keystore-alias \
        --key-pass pass:your-key-password \
        --out signed_app.apk zipaligned_app.apk
    ```
@@ -39,7 +39,7 @@
 
    `--ks-pass pass:your-keystore-password`：keystore 的密码。
 
-   `--key-alias your-keystore-alias`：你在 keystore 中使用的密钥别名。
+   `--ks-key-alias your-keystore-alias`：你在 keystore 中使用的密钥别名。
 
    `--key-pass pass:your-key-password`：与指定的密钥别名相关联的密码。
 
